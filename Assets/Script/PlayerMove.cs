@@ -5,6 +5,8 @@ using Photon.Pun;
 
 public class PlayerMove : MonoBehaviour
 {
+    Animator anim;
+
     float speed;      // 캐릭터 움직임 스피드.
     float jumpSpeed; // 캐릭터 점프 힘.
     float gravity;    // 캐릭터에게 작용하는 중력.
@@ -29,6 +31,7 @@ public class PlayerMove : MonoBehaviour
 
         view = GetComponent<PhotonView>();
         controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -41,6 +44,8 @@ public class PlayerMove : MonoBehaviour
             {
                 // 위, 아래 움직임 셋팅. 
                 MoveDir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+                anim.SetFloat("Horizontal", Input.GetAxis("Horizontal"));
+                anim.SetFloat("Vertical", Input.GetAxis("Vertical"));
 
                 // 벡터를 로컬 좌표계 기준에서 월드 좌표계 기준으로 변환한다.
                 MoveDir = transform.TransformDirection(MoveDir);
@@ -50,7 +55,9 @@ public class PlayerMove : MonoBehaviour
 
                 // 캐릭터 점프
                 if (Input.GetButton("Jump"))
+                {
                     MoveDir.y = jumpSpeed;
+                }
 
             }
 
